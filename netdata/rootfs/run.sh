@@ -19,9 +19,11 @@ set -x
 get_config netdata_claim_url
 get_config netdata_claim_token
 get_config netdata_claim_rooms
+get_config netdata_extra_apk_packages
 export NETDATA_CLAIM_URL="${netdata_claim_url}"
 export NETDATA_CLAIM_TOKEN="${netdata_claim_token}"
 export NETDATA_CLAIM_ROOMS="${netdata_claim_rooms}"
+export NETDATA_EXTRA_APK_PACKAGES="${netdata_extra_apk_packages}"
 
 get_config hostname
 hostname "${hostname}"

@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Netdata
-version: "1.42.4"
+version: "1.42.4-1"
 slug: netdata
 description: The Netdata add-on for Home Assistant
 url: "https://github.com/felipecrs/netdata-hass-addon/tree/main/netdata"
@@ -27,7 +27,7 @@ ingress: true
 ingress_port: 19999
 ingress_stream: true
 init: false
-panel_icon: mdi:chart-bell-curve
+panel_icon: mdi:leaf
 panel_title: Netdata
 panel_admin: true
 arch:
