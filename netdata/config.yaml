@@ -29,7 +29,6 @@ ingress_stream: true
 init: false
 panel_icon: mdi:leaf
 panel_title: Netdata
-panel_admin: true
 arch:
   - aarch64
   - amd64
