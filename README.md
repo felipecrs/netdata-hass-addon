@@ -22,4 +22,4 @@ See the documentation [here](netdata/DOCS.md).
 
 ## Credits
 
-While not a fork, this add-on was inspired by <https://github.dev/CryoRig/netdata-homeassistant-addon> and <https://github.com/Gamma-Software/netdata-homeassistant-addon>. Thank you!
+While not a fork, this add-on was inspired by <https://github.com/CryoRig/netdata-homeassistant-addon> and <https://github.com/Gamma-Software/netdata-homeassistant-addon>. Thank you!
