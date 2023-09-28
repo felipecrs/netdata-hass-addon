@@ -2,6 +2,10 @@
 
 This add-on follows Netdata's versioning. The changelog for Netdata can be found [here](https://github.com/netdata/netdata/blob/master/CHANGELOG.md)
 
+## Unreleased
+
+- Mount `/proc`, `/sys`, `/etc/os-release`, `/etc/passwd`, `/etc/group` as read-only as recommended by the [official Netdata documentation](https://learn.netdata.cloud/docs/installing/docker#recommended-way)
+
 ## 1.42.4-1
 
 - Change panel icon to `mdi:icon`

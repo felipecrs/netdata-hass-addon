@@ -1,6 +1,90 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -euxo pipefail
+shopt -s inherit_errexit
+
+# We cannot specify regular bind mounts for add-ons, so we have to use this trick.
+
+# These functions were taken from
+# https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond#L158
+
+function echo_error() {
+  echo "ERROR:" "${@}" >&2
+}
+
+function error() {
+  echo_error "${@}"
+  exit 1
+}
+
+# Gets the current/parent container id on the host.
+function set_container_id() {
+  local result
+
+  local mount_info_lines=()
+  readarray -t mount_info_lines </proc/self/mountinfo
+  for line in "${mount_info_lines[@]}"; do
+    if [[ "${line}" =~ /([a-z0-9]{12,128})/resolv.conf" " ]]; then
+      result="${BASH_REMATCH[1]}"
+    fi
+  done
+  unset mount_info_lines
+
+  # Sanity check
+  if [[ "${result}" =~ ^[a-z0-9]{12,128}$ ]]; then
+    readonly container_id="${result}"
+  else
+    error "Could not get parent container id"
+  fi
+}
+
+# Gets the root directory of the current/parent container on the host
+# filesystem.
+function set_container_root_on_host() {
+  local result
+
+  result="$(
+    docker inspect --format '{{.GraphDriver.Data.MergedDir}}' "${container_id}"
+  )"
+
+  # Sanity check
+  if [[ "${result}" =~ ^(/[^/]+)+$ ]]; then
+    readonly container_root_on_host="${result}"
+  else
+    error "Could not get parent container root on host"
+  fi
+}
+
+set_container_id
+set_container_root_on_host
+
+# Mount /proc from host to /host/proc as readonly with nsenter
+mkdir -p /host/proc
+nsenter --target 1 --mount -- \
+    mount --bind -o ro /proc "${container_root_on_host}/host/proc"
+
+# Same for /sys
+mkdir -p /host/sys
+nsenter --target 1 --mount -- \
+    mount --bind -o ro /sys "${container_root_on_host}/host/sys"
+
+# Same for /etc/os-release
+mkdir -p /host/etc
+touch /host/etc/os-release
+nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/os-release "${container_root_on_host}/host/etc/os-release"
+
+# Same for /etc/passwd
+mkdir -p /host/etc
+touch /host/etc/passwd
+nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/passwd "${container_root_on_host}/host/etc/passwd"
+
+# Same for /etc/group
+mkdir -p /host/etc
+touch /host/etc/group
+nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
 
 function get_config() {
     local -r name="$1"
@@ -13,8 +97,6 @@ function get_config() {
     fi
     declare -g "${name}=${value}"
 }
-
-set -x
 
 get_config netdata_claim_url
 get_config netdata_claim_token
