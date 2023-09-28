@@ -56,7 +56,9 @@ The Netdata Claim Rooms to use when connecting to the Netdata Cloud. You can get
 
 ### Option: `netdata_extra_apk_packages`
 
-Installs extra packages using Alpine Linux's package manager. For example: `lm-sensors`. Refer to <https://learn.netdata.cloud/docs/installing/docker#adding-extra-packages-at-runtime>.
+Installs extra packages using Alpine Linux's package manager. For example: `apcupsd`. Refer to <https://learn.netdata.cloud/docs/installing/docker#adding-extra-packages-at-runtime>.
+
+Note that `lm-sensors` comes preinstalled already.
 
 ## Configuring the [Netdata integration](https://www.home-assistant.io/integrations/netdata/)
 
