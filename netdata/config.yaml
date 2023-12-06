@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Netdata
-version: "1.43.2"
+version: "1.44.0"
 slug: netdata
 description: The Netdata add-on for Home Assistant
 url: "https://github.com/felipecrs/netdata-hass-addon/tree/main/netdata"
@@ -15,13 +15,13 @@ options:
   netdata_claim_url: https://app.netdata.cloud
   netdata_claim_token: ""
   netdata_claim_rooms: ""
-  netdata_extra_apk_packages: ""
+  netdata_extra_deb_packages: ""
 schema:
   hostname: str
   netdata_claim_url: str
   netdata_claim_token: str
   netdata_claim_rooms: str
-  netdata_extra_apk_packages: str
+  netdata_extra_deb_packages: str
 startup: services
 ingress: true
 ingress_port: 19999
@@ -31,12 +31,14 @@ panel_icon: mdi:leaf
 panel_title: Netdata
 host_pid: true
 host_network: true
+host_dbus: true
 apparmor: false
+journald: true
+docker_api: true
 privileged:
   - SYS_PTRACE
   - SYS_ADMIN
   # To allow run.sh to create mount points
   - SYS_RAWIO
-docker_api: true
 map:
   - config:rw
