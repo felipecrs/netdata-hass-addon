@@ -61,41 +61,41 @@ set_container_root_on_host
 # Mount /proc from host to /host/proc as readonly with nsenter
 mkdir -p /host/proc
 nsenter --target 1 --mount -- \
-    mount --bind -o ro /proc "${container_root_on_host}/host/proc"
+  mount --bind -o ro /proc "${container_root_on_host}/host/proc"
 
 # Same for /sys
 mkdir -p /host/sys
 nsenter --target 1 --mount -- \
-    mount --bind -o ro /sys "${container_root_on_host}/host/sys"
+  mount --bind -o ro /sys "${container_root_on_host}/host/sys"
 
 # Same for /etc/os-release
 mkdir -p /host/etc
 touch /host/etc/os-release
 nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/os-release "${container_root_on_host}/host/etc/os-release"
+  mount --bind -o ro /etc/os-release "${container_root_on_host}/host/etc/os-release"
 
 # Same for /etc/passwd
 mkdir -p /host/etc
 touch /host/etc/passwd
 nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/passwd "${container_root_on_host}/host/etc/passwd"
+  mount --bind -o ro /etc/passwd "${container_root_on_host}/host/etc/passwd"
 
 # Same for /etc/group
 mkdir -p /host/etc
 touch /host/etc/group
 nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
+  mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
 
 function get_config() {
-    local -r name="$1"
-    local value
+  local -r name="$1"
+  local value
 
-    value=$(jq -r ".${name}" /data/options.json)
+  value=$(jq -r ".${name}" /data/options.json)
 
-    if [[ "${value}" == "null" ]]; then
-        value=""
-    fi
-    declare -g "${name}=${value}"
+  if [[ "${value}" == "null" ]]; then
+    value=""
+  fi
+  declare -g "${name}=${value}"
 }
 
 get_config netdata_claim_url

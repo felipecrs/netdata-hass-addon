@@ -1,0 +1,5 @@
+{
+  "prettier.proseWrap": "always",
+  "docker.languageserver.formatter.ignoreMultilineInstructions": true,
+  "files.trimTrailingWhitespace": true
+}

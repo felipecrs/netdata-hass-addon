@@ -2,6 +2,8 @@ FROM netdata/netdata:v1.44.1
 
 USER root
 
+# lm-sensors: useful enough for Home Assistant to have it as a default dependency
+# docker-ce-cli: needed by the run.sh script
 RUN \
   apt-get update && \
   apt-get install -y --no-install-recommends gnupg && \
