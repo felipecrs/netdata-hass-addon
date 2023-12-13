@@ -1,6 +1,12 @@
 # Home Assistant Add-on: Netdata
 
-The [Netdata](https://www.netdata.cloud/) add-on for Home Assistant.
+_Monitor your servers, containers, and applications, in high-resolution and in
+real-time._
+
+Learn more about Netdata at their
+[official website](https://www.netdata.cloud/).
+
+![Netdata Home Assistant add-on](https://github.com/felipecrs/netdata-hass-addon/assets/29582865/535dcb73-c556-4369-aadd-a2d32425b83c)
 
 ## Installation
 
@@ -61,10 +67,10 @@ yours on <https://app.netdata.cloud/>.
 ![First step](https://github.com/hassio-addons/addon-ssh/assets/29582865/97b28b92-14f5-4232-88d4-f305de45a922)
 ![Second step](https://github.com/hassio-addons/addon-ssh/assets/29582865/7ce5bb97-903a-4778-8304-a2fa433c77b1)
 
-### Option: `netdata_extra_apk_packages`
+### Option: `netdata_extra_deb_packages`
 
-Installs extra packages using Alpine Linux's package manager. For example:
-`apcupsd`. Refer to
+Installs extra packages using Debian's package manager. For example: `apcupsd`.
+Refer to
 <https://learn.netdata.cloud/docs/installing/docker#adding-extra-packages-at-runtime>.
 
 Note that `lm-sensors` comes preinstalled already.

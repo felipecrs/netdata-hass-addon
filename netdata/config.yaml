@@ -2,7 +2,9 @@
 name: Netdata
 version: "1.44.1"
 slug: netdata
-description: The Netdata add-on for Home Assistant
+description:
+  Monitor your servers, containers, and applications, in high-resolution and in
+  real-time
 url: "https://github.com/felipecrs/netdata-hass-addon/tree/main/netdata"
 arch:
   - armhf
