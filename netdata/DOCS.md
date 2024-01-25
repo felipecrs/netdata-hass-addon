@@ -75,6 +75,12 @@ Refer to
 
 Note that `lm-sensors` comes preinstalled already.
 
+### Option: `netdata_healthcheck_target`
+
+Change or disable the default docker health check from Netdata.
+Refer to
+<https://learn.netdata.cloud/docs/installing/docker#health-checks>.
+
 ## Configuring the [Netdata integration](https://www.home-assistant.io/integrations/netdata/)
 
 ```yaml
