@@ -77,7 +77,7 @@ Note that `lm-sensors` comes preinstalled already.
 
 ### Option: `netdata_healthcheck_target`
 
-Change or disable the default docker health check from Netdata.
+Allows to control how the docker health checks from Netdata run. For example: `cli`.
 Refer to
 <https://learn.netdata.cloud/docs/installing/docker#health-checks>.
 
