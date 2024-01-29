@@ -18,12 +18,14 @@ options:
   netdata_claim_token: ""
   netdata_claim_rooms: ""
   netdata_extra_deb_packages: ""
+  netdata_healthcheck_target: ""
 schema:
   hostname: str
   netdata_claim_url: str
   netdata_claim_token: str
   netdata_claim_rooms: str
   netdata_extra_deb_packages: str
+  netdata_healthcheck_target: str
 startup: services
 ingress: true
 ingress_port: 19999
