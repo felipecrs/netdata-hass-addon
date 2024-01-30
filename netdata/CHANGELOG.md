@@ -8,7 +8,7 @@ made to the add-on itself in such version.
 
 ## 1.44.1-1
 
-- Fix `netdata_healthcheck_target` not working.
+- Fix `netdata_healthcheck_target` option not working.
 
 ## 1.44.1-0
 
