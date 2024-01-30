@@ -18,10 +18,9 @@ RUN \
     tee /etc/apt/sources.list.d/docker.list && \
   apt-get update && \
   apt-get install -y --no-install-recommends lm-sensors docker-ce-cli && \
-  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists/* && \
+  mv -f /usr/sbin/health.sh /usr/sbin/health.sh.orig
 
 COPY rootfs /
 
-ENTRYPOINT ["/run.sh"]
-
-HEALTHCHECK --interval=60s --timeout=10s --retries=3 CMD /health.sh
+ENTRYPOINT ["/opt/netdata-hass-addon/run.sh"]

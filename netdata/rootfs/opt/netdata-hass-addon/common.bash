@@ -1,4 +1,14 @@
-#!/usr/bin/env bash
+set -euxo pipefail
+shopt -s inherit_errexit
+
+function echo_error() {
+  echo "ERROR:" "${@}" >&2
+}
+
+function error() {
+  echo_error "${@}"
+  exit 1
+}
 
 function get_config() {
   local -r name="$1"
@@ -11,9 +21,3 @@ function get_config() {
   fi
   declare -g "${name}=${value}"
 }
-
-get_config netdata_healthcheck_target
-export NETDATA_HEALTHCHECK_TARGET="${netdata_healthcheck_target}"
-
-# Call netdata docker health check
-exec /usr/sbin/health.sh
