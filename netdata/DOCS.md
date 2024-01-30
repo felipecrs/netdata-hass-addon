@@ -75,7 +75,7 @@ Refer to
 
 Note that `lm-sensors` comes preinstalled already.
 
-### Option: `NETDATA_HEALTHCHECK_TARGET`
+### Option: `netdata_healthcheck_target`
 
 Allows to control how the docker health checks from Netdata run. For example: `cli`.
 Refer to
