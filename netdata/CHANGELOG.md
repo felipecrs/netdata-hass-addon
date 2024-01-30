@@ -6,6 +6,10 @@ This add-on follows Netdata's versioning. The changelog for Netdata can be found
 If the version you are looking for is not in this list, it means no changes were
 made to the add-on itself in such version.
 
+## 1.44.1-1
+
+- Fix `netdata_healthcheck_target` option not working.
+
 ## 1.44.1-0
 
 - Add `netdata_healthcheck_target` configuration (#7) by @plasticrake.

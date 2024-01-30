@@ -1,21 +1,12 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
-shopt -s inherit_errexit
+# shellcheck source=./common.bash
+source /opt/netdata-hass-addon/common.bash
 
 # We cannot specify regular bind mounts for add-ons, so we have to use this trick.
 
 # These functions were taken from
 # https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond#L158
-
-function echo_error() {
-  echo "ERROR:" "${@}" >&2
-}
-
-function error() {
-  echo_error "${@}"
-  exit 1
-}
 
 # Gets the current/parent container id on the host.
 function set_container_id() {
@@ -86,30 +77,21 @@ touch /host/etc/group
 nsenter --target 1 --mount -- \
   mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
 
-function get_config() {
-  local -r name="$1"
-  local value
-
-  value=$(jq -r ".${name}" /data/options.json)
-
-  if [[ "${value}" == "null" ]]; then
-    value=""
-  fi
-  declare -g "${name}=${value}"
-}
-
 get_config netdata_claim_url
 get_config netdata_claim_token
 get_config netdata_claim_rooms
 get_config netdata_extra_deb_packages
-get_config netdata_healthcheck_target
+# shellcheck disable=SC2154
 export NETDATA_CLAIM_URL="${netdata_claim_url}"
+# shellcheck disable=SC2154
 export NETDATA_CLAIM_TOKEN="${netdata_claim_token}"
+# shellcheck disable=SC2154
 export NETDATA_CLAIM_ROOMS="${netdata_claim_rooms}"
+# shellcheck disable=SC2154
 export NETDATA_EXTRA_DEB_PACKAGES="${netdata_extra_deb_packages}"
-export NETDATA_HEALTHCHECK_TARGET="${netdata_healthcheck_target}"
 
 get_config hostname
+# shellcheck disable=SC2154
 hostname "${hostname}"
 
 mkdir -p /config/netdata /etc/netdata
