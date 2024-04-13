@@ -13,9 +13,10 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^netdata/config.yaml$"],
+      "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
       "matchStrings": [
-        "^version:\\s(?<currentValue>.+)$"
+        "^FROM netdata/netdata:v(?<currentValue>.+)$",
+        "^version: (?<currentValue>.+)$"
       ],
       "depNameTemplate": "netdata/netdata",
       "datasourceTemplate": "github-releases"
