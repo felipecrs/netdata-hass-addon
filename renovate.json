@@ -1,8 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
+  "extends": ["config:recommended"],
   "dependencyDashboard": true,
   "packageRules": [
     {
@@ -11,22 +9,15 @@
       "automerge": true
     }
   ],
-  "enabledManagers": [
-    "github-actions",
-    "regex"
-  ],
+  "enabledManagers": ["github-actions", "regex"],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^netdata/Dockerfile$"],
-      "matchStrings": ["^FROM netdata/netdata:v(?<currentValue>.+)\\n"],
-      "depNameTemplate": "netdata/netdata",
-      "datasourceTemplate": "github-releases"
-    },
-    {
-      "customType": "regex",
-      "fileMatch": ["^netdata/config.yaml$"],
-      "matchStrings": ["^version: (?<currentValue>.+)\\n"],
+      "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
+      "matchStrings": [
+        "^FROM netdata/netdata:v(?<currentValue>.+)\\n",
+        "^version:\\s(?<currentValue>.+)\\n"
+      ],
       "depNameTemplate": "netdata/netdata",
       "datasourceTemplate": "github-releases"
     }
