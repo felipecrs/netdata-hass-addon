@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ],
+  "enabledManagers": ["github-actions", "regex"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
+      "matchStrings": [
+        "FROM netdata/netdata:v(?<currentValue>.+)\\n",
+        "version: (?<currentValue>.+)\\n"
+      ],
+      "depNameTemplate": "netdata/netdata",
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}
