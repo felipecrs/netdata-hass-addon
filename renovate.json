@@ -15,8 +15,8 @@
       "customType": "regex",
       "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
       "matchStrings": [
-        "^FROM netdata/netdata:v(?<currentValue>.+)$",
-        "^version: (?<currentValue>.+)$"
+        "\\nFROM netdata/netdata:v(?<currentValue>.+)\\n",
+        "\\nversion: (?<currentValue>.+)\\n"
       ],
       "depNameTemplate": "netdata/netdata",
       "datasourceTemplate": "github-releases"
