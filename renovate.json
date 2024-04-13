@@ -3,6 +3,14 @@
   "extends": [
     "config:recommended"
   ],
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ],
   "enabledManagers": [
     "github-actions",
     "regex"
@@ -11,14 +19,14 @@
     {
       "customType": "regex",
       "fileMatch": ["^netdata/Dockerfile$"],
-      "matchStrings": ["FROM netdata/netdata:v(?<currentValue>.*?)\\n"],
+      "matchStrings": ["FROM netdata/netdata:v(?<currentValue>.+)\\n"],
       "depNameTemplate": "netdata/netdata",
       "datasourceTemplate": "github-releases"
     },
     {
       "customType": "regex",
       "fileMatch": ["^netdata/config.yaml$"],
-      "matchStrings": ["\"version: \"(?<currentValue>.*?)\"\\n"],
+      "matchStrings": ["\"version: \"(?<currentValue>[^\"]+)\"\\n"],
       "depNameTemplate": "netdata/netdata",
       "datasourceTemplate": "github-releases"
     }
