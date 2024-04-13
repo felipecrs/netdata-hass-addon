@@ -2,5 +2,25 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "enabledManagers": [
+    "github-actions",
+    "regex"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^netdata/Dockerfile$"],
+      "matchStrings": ["FROM netdata/netdata:v(?<currentValue>.*?)\\n"],
+      "depNameTemplate": "netdata/netdata",
+      "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^netdata/config.yaml$"],
+      "matchStrings": ["\"version: \"(?<currentValue>.*?)\"\\n"],
+      "depNameTemplate": "netdata/netdata",
+      "datasourceTemplate": "github-releases"
+    }
   ]
 }
