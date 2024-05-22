@@ -1,4 +1,4 @@
-FROM netdata/netdata:v1.45.4
+FROM netdata/netdata:v1.45.5
 
 USER root
 
