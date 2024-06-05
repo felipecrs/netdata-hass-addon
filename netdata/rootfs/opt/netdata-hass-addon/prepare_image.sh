@@ -47,11 +47,11 @@ apt-get update
 # docker-ce-cli: needed by the run.sh script
 apt-get install -y --no-install-recommends lm-sensors docker-ce-cli
 
-# clean up apt cache
-rm -rf /var/lib/apt/lists/*
-
 # relocate the original health check script so we can put ours in its place
 mv -f /usr/sbin/health.sh /usr/sbin/health.sh.orig
 
 # the upstream image may move the run.sh script in the future, this is a safeguard
 stat /usr/sbin/run.sh
+
+# clean up apt cache
+rm -rf /var/lib/apt/lists/*
