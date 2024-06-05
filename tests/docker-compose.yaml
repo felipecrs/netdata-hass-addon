@@ -6,7 +6,8 @@ services:
       - ./options.json:/data/options.json
     pid: host
     network_mode: host
-    cap_add:
-      - SYS_PTRACE
-      - SYS_ADMIN
-      - SYS_RAWIO
+    privileged: true
+    # cap_add:
+    #   - SYS_PTRACE
+    #   - SYS_ADMIN
+    #   - SYS_RAWIO
