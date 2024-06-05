@@ -48,7 +48,7 @@ apt-get update
 apt-get install -y --no-install-recommends lm-sensors docker-ce-cli
 
 # relocate the original health check script so we can put ours in its place
-mv -f /usr/sbin/health.sh /usr/sbin/health.sh.orig
+mv -f /usr/sbin/health.sh /opt/netdata-hass-addon/original_health.sh
 
 # the upstream image may move the run.sh script in the future, this is a safeguard
 stat /usr/sbin/run.sh

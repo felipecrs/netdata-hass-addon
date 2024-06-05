@@ -4,10 +4,11 @@ FROM netdata/netdata:v1.45.6
 # hadolint ignore=DL3002
 USER root
 
-COPY rootfs /
-
 # prepare_image.sh could have been mounted with --mount, but HAOS apparently
 # doesn't use buildkit
+COPY rootfs/opt/netdata-hass-addon/prepare_image.sh /opt/netdata-hass-addon/
 RUN ["/opt/netdata-hass-addon/prepare_image.sh"]
+
+COPY rootfs /
 
 ENTRYPOINT ["/opt/netdata-hass-addon/run.sh"]

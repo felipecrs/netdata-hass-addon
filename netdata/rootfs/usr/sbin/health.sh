@@ -8,4 +8,4 @@ get_config netdata_healthcheck_target
 export NETDATA_HEALTHCHECK_TARGET="${netdata_healthcheck_target}"
 
 # Call the original Netdata docker health check
-exec /usr/sbin/health.sh.orig "${@}"
+exec /opt/netdata-hass-addon/original_health.sh "${@}"
