@@ -11,7 +11,7 @@ docker compose build
 
 trap 'docker compose down' EXIT
 
-if docker compose up --wait; then
+if time docker compose up --wait; then
     echo "Test passed" >&2
     result=0
 else
