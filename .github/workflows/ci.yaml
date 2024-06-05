@@ -9,14 +9,11 @@ on:
       - master
 
 jobs:
-  lint:
-    name: Lint add-on
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - name: ⤵️ Check out code from GitHub
-        uses: actions/checkout@v4.1.6
-
-      - name: 🚀 Run Home Assistant Add-on Lint
-        uses: frenck/action-addon-linter@v2.15
+      - uses: actions/checkout@v4
+      - uses: frenck/action-addon-linter@v2.15
         with:
           path: ./netdata
+      - run: tests/test.sh

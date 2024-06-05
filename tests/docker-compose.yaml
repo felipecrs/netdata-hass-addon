@@ -1,0 +1,15 @@
+services:
+  netdata:
+    build: ../netdata
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./options.json:/data/options.json
+    pid: host
+    network_mode: host
+    # For some reason, even though these capabilities are enough in my machine,
+    # they are not enough in GitHub Actions, but privileged does the trick.
+    # cap_add:
+    #   - SYS_PTRACE
+    #   - SYS_ADMIN
+    #   - SYS_RAWIO
+    privileged: true
