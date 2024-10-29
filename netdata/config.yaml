@@ -5,7 +5,7 @@ slug: netdata
 description:
   Monitor your servers, containers, and applications, in high-resolution and in
   real-time
-url: "https://github.com/felipecrs/netdata-hass-addon/tree/main/netdata"
+url: "https://github.com/felipecrs/netdata-hass-addon/tree/master/netdata"
 arch:
   - armhf
   - armv7
