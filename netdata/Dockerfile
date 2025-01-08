@@ -1,4 +1,4 @@
-FROM netdata/netdata:v2.1.0
+FROM netdata/netdata:v2.1.1
 
 # add-ons normally run as root
 # hadolint ignore=DL3002
