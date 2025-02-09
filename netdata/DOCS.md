@@ -89,7 +89,7 @@ When opening the Netdata web interface, you'll be prompted to sign-in to Netdata
 
 Unfortunately, [Netdata v2 provides no option to disable such annoyance](https://github.com/netdata/netdata/issues/18964).
 
-The sign-in functionality will not work when accessing the Netdata interface through the Home Assistant interface.
+That said, the sign-in functionality will not work when accessing the Netdata interface through the Home Assistant interface.
 
 However, the add-on also exposes the Netdata web interface on port `19999`, which you can access from your browser:
 
