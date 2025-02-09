@@ -77,21 +77,26 @@ Note that `lm-sensors` comes preinstalled already.
 
 ### Option: `netdata_healthcheck_target`
 
-Allows to control how the docker health checks from Netdata run. For example: `cli`.
-Refer to
+Allows to control how the docker health checks from Netdata run. For example:
+`cli`. Refer to
 <https://learn.netdata.cloud/docs/installing/docker#health-checks>.
 
 ## Signing-in to Netdata Cloud from within the add-on
 
-When opening the Netdata web interface, you'll be prompted to sign-in to Netdata Cloud.
+When opening the Netdata web interface, you'll be prompted to sign-in to Netdata
+Cloud.
 
-**There's no need to do that**, and you can just click _Skip and use the dashboard anonymously_ instead.
+**There's no need to do that**, and you can just click _Skip and use the
+dashboard anonymously_ instead.
 
-Unfortunately, [Netdata v2 provides no option to disable such annoyance](https://github.com/netdata/netdata/issues/18964).
+Unfortunately,
+[Netdata v2 provides no option to disable such annoyance](https://github.com/netdata/netdata/issues/18964).
 
-That said, the sign-in functionality will not work when accessing the Netdata interface through the Home Assistant interface.
+That said, the sign-in functionality will not work when accessing the Netdata
+interface through the Home Assistant interface.
 
-However, the add-on also exposes the Netdata web interface on port `19999`, which you can access from your browser:
+However, the add-on also exposes the Netdata web interface on port `19999`,
+which you can access from your browser:
 
 ```
 http://<HA IP address>:19999

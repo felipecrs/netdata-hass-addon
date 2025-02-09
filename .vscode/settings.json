@@ -1,4 +1,7 @@
 {
+  "[yaml][json][jsonc][markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "prettier.proseWrap": "always",
   "docker.languageserver.formatter.ignoreMultilineInstructions": true,
   "files.trimTrailingWhitespace": true
