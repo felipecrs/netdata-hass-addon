@@ -46,6 +46,11 @@ function set_container_root_on_host() {
   fi
 }
 
+if [[ ! -d /config/netdata && -d /homeassistant/netdata ]]; then
+  echo "Migrating Netdata configuration files of Home Assistant config directory..." >&2
+  mv -fv /homeassistant/netdata /config/
+fi
+
 set_container_id
 set_container_root_on_host
 

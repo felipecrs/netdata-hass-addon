@@ -27,11 +27,11 @@ Follow these steps to get the add-on installed on your system:
 
 ## Configuring Netdata
 
-The Netdata configuration files are located in `/config/netdata`. You can edit
+The Netdata configuration files are located in `/addon_configs/bc277197_netdata/netdata`. You can edit
 them directly.
 
 If you are using the _Advanced SSH & Web Terminal_ add-on with protection mode
-disabled, you can use the `edit-config` helper directly. Example:
+disabled, you can also use Netdata's `edit-config` helper. Example:
 
 ```console
 docker exec -it -w /etc/netdata addon_bc277197_netdata ./edit-config charts.d.conf
