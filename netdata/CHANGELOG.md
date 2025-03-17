@@ -2,10 +2,13 @@
 
 [Click here to view the Netdata changelog](https://github.com/netdata/netdata/releases).
 
+### 2.2.6-addon.2
+
+- Add support for [monitoring NVME devices](https://learn.netdata.cloud/docs/collecting-metrics/storage,-mount-points-and-filesystems/nvme-devices) out of the box
+
 ### 2.2.6-addon.1
 
-- Add support for monitoring [S.M.A.R.T.](https://en.wikipedia.org/wiki/Self-Monitoring,_Analysis_and_Reporting_Technology) through [smartctl](https://learn.netdata.cloud/docs/collecting-metrics/hardware-devices-and-sensors/s.m.a.r.t.) out of the box
-- Improve addon installation and update time a little bit, by avoiding depending on `gpg` and by removing one of the `apt-get update` calls
+- Add support for [monitoring storage devices through S.M.A.R.T.](https://learn.netdata.cloud/docs/collecting-metrics/hardware-devices-and-sensors/s.m.a.r.t.) out of the box
 
 ### 2.2.6-addon.0
 
