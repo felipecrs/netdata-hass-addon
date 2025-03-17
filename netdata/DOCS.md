@@ -73,7 +73,7 @@ Installs extra packages using Debian's package manager. For example: `apcupsd`.
 Refer to
 <https://learn.netdata.cloud/docs/installing/docker#adding-extra-packages-at-runtime>.
 
-Note that `lm-sensors`, `smartmontools`, and `nvme-cli` comes preinstalled already.
+Note that `smartmontools` and `nvme-cli` comes preinstalled already.
 
 ### Option: `netdata_healthcheck_target`
 

@@ -2,6 +2,10 @@
 
 [Click here to view the Netdata changelog](https://github.com/netdata/netdata/releases).
 
+### 2.2.6-addon.3
+
+- Remove `lm-sensors` package from the add-on, which is [no longer required by Netdata](https://community.netdata.cloud/t/temperature-on-raspberryi-pi-lm-sensors-deprecated/5910)
+
 ### 2.2.6-addon.2
 
 - Add support for [monitoring NVME devices](https://learn.netdata.cloud/docs/collecting-metrics/storage,-mount-points-and-filesystems/nvme-devices) out of the box
