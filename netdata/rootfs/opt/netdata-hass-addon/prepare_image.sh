@@ -30,10 +30,9 @@ unset arch version_codename
 apt-get update
 
 # docker-ce-cli: needed by the run.sh script
-# lm-sensors: useful enough for Home Assistant to have it as a default dependency
 # smartmontools: useful enough for Home Assistant to have it as a default dependency
 # nvme-cli: useful enough for Home Assistant to have it as a default dependency
-apt-get install -y --no-install-recommends docker-ce-cli lm-sensors smartmontools nvme-cli
+apt-get install -y --no-install-recommends docker-ce-cli smartmontools nvme-cli
 
 # clean up apt cache
 rm -rf /var/lib/apt/lists/*
