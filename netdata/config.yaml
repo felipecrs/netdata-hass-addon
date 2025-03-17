@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Netdata
-version: 2.2.6-addon.0
+version: 2.2.6-addon.1
 slug: netdata
 description:
   Monitor your servers, containers, and applications, in high-resolution and in
@@ -39,12 +39,14 @@ host_dbus: true
 apparmor: false
 journald: true
 docker_api: true
+# For smartctl
+full_access: true
 privileged:
   - SYS_PTRACE
   - SYS_ADMIN
-  # To allow run.sh create mount points
+  # To allow run.sh create mount points and for smartctl
   - SYS_RAWIO
 map:
   - addon_config:rw
-  # To allow run.sh migrate from home assistant config to add-on config
+  # To allow run.sh migrate from home assistant config dir to add-on config
   - homeassistant_config:rw
