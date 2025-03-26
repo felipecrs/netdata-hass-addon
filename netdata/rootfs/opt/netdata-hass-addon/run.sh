@@ -60,12 +60,12 @@ if ! mountpoint --quiet /host/etc/os-release; then
   # Mount /proc from host to /host/proc as readonly with nsenter
   mkdir -p /host/proc
   nsenter --target 1 --mount -- \
-    mount --bind -o ro /proc "${container_root_on_host}/host/proc"
+    mount --rbind -o ro /proc "${container_root_on_host}/host/proc"
 
   # Same for /sys
   mkdir -p /host/sys
   nsenter --target 1 --mount -- \
-    mount --bind -o ro /sys "${container_root_on_host}/host/sys"
+    mount --rbind -o ro /sys "${container_root_on_host}/host/sys"
 
   # Same for /etc/passwd
   mkdir -p /host/etc
