@@ -51,36 +51,43 @@ if [[ ! -d /config/netdata && -d /homeassistant/netdata ]]; then
   mv -fv /homeassistant/netdata /config/
 fi
 
-set_container_id
-set_container_root_on_host
+# This is a trick to mount host directories and files inside the container,
+# given HA add-ons cannot specify bind mounts.
+if ! mountpoint --quiet /host/etc/os-release; then
+  set_container_id
+  set_container_root_on_host
 
-# Mount /proc from host to /host/proc as readonly with nsenter
-mkdir -p /host/proc
-nsenter --target 1 --mount -- \
-  mount --bind -o ro /proc "${container_root_on_host}/host/proc"
+  # Mount /proc from host to /host/proc as readonly with nsenter
+  mkdir -p /host/proc
+  nsenter --target 1 --mount -- \
+    mount --bind -o ro /proc "${container_root_on_host}/host/proc"
 
-# Same for /sys
-mkdir -p /host/sys
-nsenter --target 1 --mount -- \
-  mount --bind -o ro /sys "${container_root_on_host}/host/sys"
+  # Same for /sys
+  mkdir -p /host/sys
+  nsenter --target 1 --mount -- \
+    mount --bind -o ro /sys "${container_root_on_host}/host/sys"
 
-# Same for /etc/os-release
-mkdir -p /host/etc
-touch /host/etc/os-release
-nsenter --target 1 --mount -- \
-  mount --bind -o ro /etc/os-release "${container_root_on_host}/host/etc/os-release"
+  # Same for /etc/passwd
+  mkdir -p /host/etc
+  touch /host/etc/passwd
+  nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/passwd "${container_root_on_host}/host/etc/passwd"
 
-# Same for /etc/passwd
-mkdir -p /host/etc
-touch /host/etc/passwd
-nsenter --target 1 --mount -- \
-  mount --bind -o ro /etc/passwd "${container_root_on_host}/host/etc/passwd"
+  # Same for /etc/group
+  mkdir -p /host/etc
+  touch /host/etc/group
+  nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
 
-# Same for /etc/group
-mkdir -p /host/etc
-touch /host/etc/group
-nsenter --target 1 --mount -- \
-  mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
+  # Same for /etc/os-release
+  mkdir -p /host/etc
+  touch /host/etc/os-release
+  nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/os-release "${container_root_on_host}/host/etc/os-release"
+
+  docker restart "${container_id}"
+  exit 143
+fi
 
 get_config netdata_claim_url
 get_config netdata_claim_token
