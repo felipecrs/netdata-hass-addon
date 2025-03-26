@@ -32,7 +32,8 @@ apt-get update
 # docker-ce-cli: needed by the run.sh script
 # smartmontools: useful enough for Home Assistant to have it as a default dependency
 # nvme-cli: useful enough for Home Assistant to have it as a default dependency
-apt-get install -y --no-install-recommends docker-ce-cli smartmontools nvme-cli
+# apcupsd: useful enough for Home Assistant to have it as a default dependency
+apt-get install -y --no-install-recommends docker-ce-cli smartmontools nvme-cli apcupsd
 
 # clean up apt cache
 rm -rf /var/lib/apt/lists/*
