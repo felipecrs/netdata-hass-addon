@@ -79,6 +79,12 @@ if ! mountpoint --quiet /host/etc/os-release; then
   nsenter --target 1 --mount -- \
     mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
 
+  # Same for /etc/localtime
+  mkdir -p /host/etc
+  touch /host/etc/localtime
+  nsenter --target 1 --mount -- \
+    mount --bind -o ro /etc/localtime "${container_root_on_host}/host/etc/localtime"
+
   # Same for /etc/os-release
   mkdir -p /host/etc
   touch /host/etc/os-release
