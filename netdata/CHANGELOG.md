@@ -2,6 +2,10 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### 2.3.1-addon.2
+
+- Fix cgroup metrics not showing because of `/host/sys/fs/cgroup` mount not working
+
 ### 2.3.1-addon.1
 
 - Hotfix for the add-on not being removed after stopping it

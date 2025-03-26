@@ -62,10 +62,12 @@ if ! mountpoint --quiet /host/etc/os-release; then
   nsenter --target 1 --mount -- \
     mount --bind --read-only /proc "${container_root_on_host}/host/proc"
 
-  # Same for /sys
+  # Same for /sys and /sys/fs/cgroup
   mkdir -p /host/sys
   nsenter --target 1 --mount -- \
     mount --bind --read-only /sys "${container_root_on_host}/host/sys"
+  nsenter --target 1 --mount -- \
+    mount --bind --read-only /sys/fs/cgroup "${container_root_on_host}/host/sys/fs/cgroup"
 
   # Same for /etc/passwd
   mkdir -p /host/etc
