@@ -2,6 +2,12 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### 2.3.1-addon.1
+
+- Hotfix for the add-on not being removed after stopping it
+  - This reverts the `/host/sys/fs/cgroup` fix, which means cgroups metrics will no longer be shown
+  - If you upgraded to `2.3.1-addon.0` before this hotfix, you will need to disable _Start on boot_, reboot the host, upgrade to `2.3.1-addon.1`, and then re-enable _Start on boot_
+
 ### 2.3.1-addon.0
 
 - Fix several metrics not being shown because of `/host` mounts not working, including:
