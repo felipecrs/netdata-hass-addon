@@ -60,36 +60,36 @@ if ! mountpoint --quiet /host/etc/os-release; then
   # Mount /proc from host to /host/proc as readonly with nsenter
   mkdir -p /host/proc
   nsenter --target 1 --mount -- \
-    mount --rbind -o ro /proc "${container_root_on_host}/host/proc"
+    mount --rbind --read-only /proc "${container_root_on_host}/host/proc"
 
   # Same for /sys
   mkdir -p /host/sys
   nsenter --target 1 --mount -- \
-    mount --rbind -o ro /sys "${container_root_on_host}/host/sys"
+    mount --rbind --read-only /sys "${container_root_on_host}/host/sys"
 
   # Same for /etc/passwd
   mkdir -p /host/etc
   touch /host/etc/passwd
   nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/passwd "${container_root_on_host}/host/etc/passwd"
+    mount --bind --read-only /etc/passwd "${container_root_on_host}/host/etc/passwd"
 
   # Same for /etc/group
   mkdir -p /host/etc
   touch /host/etc/group
   nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/group "${container_root_on_host}/host/etc/group"
+    mount --bind --read-only /etc/group "${container_root_on_host}/host/etc/group"
 
   # Same for /etc/localtime
   mkdir -p /host/etc
   touch /host/etc/localtime
   nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/localtime "${container_root_on_host}/host/etc/localtime"
+    mount --bind --read-only /etc/localtime "${container_root_on_host}/host/etc/localtime"
 
   # Same for /etc/os-release
   mkdir -p /host/etc
   touch /host/etc/os-release
   nsenter --target 1 --mount -- \
-    mount --bind -o ro /etc/os-release "${container_root_on_host}/host/etc/os-release"
+    mount --bind --read-only /etc/os-release "${container_root_on_host}/host/etc/os-release"
 
   docker restart "${container_id}"
   exit 143
