@@ -1,6 +1,18 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
 
-[Click here to view the Netdata changelog](https://github.com/netdata/netdata/releases).
+[Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
+
+### 2.3.1-addon.0
+
+- Fix several metrics not being shown because of `/host` mounts not working, including:
+  - `/host/proc`
+  - `/host/sys`
+    - And submounts like `/host/sys/fs/cgroup`
+  - `/host/etc/os-release`
+  - `/host/etc/passwd`
+  - `/host/etc/group`
+  - `/host/etc/localtime` (newly added)
+- Add `apcupsd` package to support [monitoring UPS devices](https://learn.netdata.cloud/docs/collecting-metrics/ups/apc-ups) out of the box
 
 ### 2.2.6-addon.3
 
