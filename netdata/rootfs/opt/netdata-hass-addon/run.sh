@@ -51,6 +51,10 @@ if [[ ! -d /config/netdata && -d /homeassistant/netdata ]]; then
   mv -fv /homeassistant/netdata /config/
 fi
 
+# https://github.com/home-assistant/supervisor/issues/3223
+echo "Deleting old netdata images if any..." >&2
+docker images -q netdata/netdata | xargs -r docker rmi 2>/dev/null || true
+
 # This is a trick to mount host directories and files inside the container,
 # given HA add-ons cannot specify bind mounts.
 if ! mountpoint --quiet /host/etc/os-release; then
