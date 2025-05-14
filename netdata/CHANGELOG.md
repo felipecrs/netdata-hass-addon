@@ -2,6 +2,12 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### v2.5.1-addon.2
+
+- Remove dependency on Docker CLI
+  - This makes the installation and update of the add-on considerably faster
+  - And allowed to remove part of the workaround introduced in the last version, as realized [here](https://github.com/netdata/netdata/pull/20283#issuecomment-2881491522).
+
 ### v2.5.1-addon.1
 
 - Fix Netdata not resolving container names, fixes [#66](https://github.com/felipecrs/netdata-hass-addon/issues/66)

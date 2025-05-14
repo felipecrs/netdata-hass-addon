@@ -3,12 +3,10 @@
 # shellcheck source=./common.bash
 source /opt/netdata-hass-addon/common.bash
 
-# We cannot specify regular bind mounts for add-ons, so we have to use this trick.
-
-# These functions were taken from
-# https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond#L158
+docker_sock='/var/run/docker.sock'
 
 # Gets the current/parent container id on the host.
+# Originally taken from https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond
 function set_container_id() {
   local result
 
@@ -29,13 +27,14 @@ function set_container_id() {
   fi
 }
 
-# Gets the root directory of the current/parent container on the host
-# filesystem.
+# Gets the root directory of the current/parent container on the host filesystem.
+# Originally taken from https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond
 function set_container_root_on_host() {
   local result
 
   result="$(
-    docker inspect --format '{{.GraphDriver.Data.MergedDir}}' "${container_id}"
+    curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" "http://localhost/containers/${container_id}/json" |
+      jq --exit-status --raw-output '.GraphDriver.Data.MergedDir'
   )"
 
   # Sanity check
@@ -53,11 +52,13 @@ fi
 
 # https://github.com/home-assistant/supervisor/issues/3223
 echo "Deleting old netdata images if any..." >&2
-docker images -q netdata/netdata | xargs -r docker rmi 2>/dev/null || true # TODO: remove this after some months
-docker images -q ghcr.io/netdata/netdata | xargs -r docker rmi 2>/dev/null || true
+curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" http://localhost/images/json |
+  jq --exit-status --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
+  xargs -r -I {} -t -- curl --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
 
-# This is a trick to mount host directories and files inside the container,
-# given HA add-ons cannot specify bind mounts.
+# We cannot specify arbitrary volume mounts for add-ons, so we have to use this trick.
+cat /host/etc/os-release || true
+
 if ! mountpoint --quiet /host/etc/os-release; then
   set_container_id
   set_container_root_on_host
@@ -98,54 +99,26 @@ if ! mountpoint --quiet /host/etc/os-release; then
   nsenter --target 1 --mount -- \
     mount --bind --read-only /etc/os-release "${container_root_on_host}/host/etc/os-release"
 
-  docker restart "${container_id}"
+  # Restart this container
+  curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" -X POST "http://localhost/containers/${container_id}/restart"
   exit 143
 fi
 
-# Fix docker group, mostly copied from https://github.com/felipecrs/fixdockergid
-# TODO: these things should be fixed in Netdata itself
-docker_sock='/var/run/docker.sock'
-if [[ -S "${docker_sock}" ]]; then
-  docker_gid="$(stat -c "%g" "${docker_sock}")"
-
-  if getent group "${docker_gid}" >/dev/null; then
-    # A group with the docker GID already exists
-
-    # Check if it is named docker
-    docker_gid_group_name="$(getent group "${docker_gid}" | cut -d: -f1)"
-    if [ "${docker_gid_group_name}" != "docker" ]; then
-      # In this case we create a group named docker, and make it an alias of such group.
-      groupadd -r docker
-      groupmod -o -g "${docker_gid}" docker
-    fi
-    unset docker_gid_group_name
-  else
-    # No group with docker GID exists, so we create it.
-    groupadd -r -g "${docker_gid}" docker
+# Fix for when a group with the docker GID already exists
+# Originally taken from https://github.com/felipecrs/fixdockergid/blob/448da6054f76884425b204be8f3d6bcd9ff68acb/_fixdockergid.sh
+# TODO: submit fix upstream
+docker_gid="$(stat -c "%g" "${docker_sock}")"
+if getent group "${docker_gid}" >/dev/null; then
+  # Check if it is named docker
+  docker_gid_group_name="$(getent group "${docker_gid}" | cut -d: -f1)"
+  if [[ "${docker_gid_group_name}" != "docker" ]]; then
+    # If it's not named docker, create a group named docker and make it an alias of such group.
+    groupadd -r docker
+    groupmod -o -g "${docker_gid}" docker
   fi
-  unset docker_gid
-
-  # Otherwise docker plugin tries to connect to tcp://localhost:2375/var/run/docker.sock
-  sed -i "s|DOCKER_HOST=\"${docker_sock}\"|DOCKER_HOST=\"unix://${docker_sock}\"|" /usr/sbin/run.sh
+  unset docker_gid_group_name
 fi
-unset docker_sock
-
-get_config netdata_claim_url
-get_config netdata_claim_token
-get_config netdata_claim_rooms
-get_config netdata_extra_deb_packages
-# shellcheck disable=SC2154
-export NETDATA_CLAIM_URL="${netdata_claim_url}"
-# shellcheck disable=SC2154
-export NETDATA_CLAIM_TOKEN="${netdata_claim_token}"
-# shellcheck disable=SC2154
-export NETDATA_CLAIM_ROOMS="${netdata_claim_rooms}"
-# shellcheck disable=SC2154
-export NETDATA_EXTRA_DEB_PACKAGES="${netdata_extra_deb_packages}"
-
-get_config hostname
-# shellcheck disable=SC2154
-hostname "${hostname}"
+unset docker_gid docker_sock
 
 mkdir -p /config/netdata /etc/netdata
 mount --bind /config/netdata /etc/netdata
@@ -155,5 +128,28 @@ mount --bind /data/netdata-cache /var/cache/netdata
 
 mkdir -p /data/netdata-lib /var/lib/netdata
 mount --bind /data/netdata-lib /var/lib/netdata
+
+get_config hostname
+hostname "${hostname:?}"
+
+get_config netdata_claim_url
+if [[ -n "${netdata_claim_url}" ]]; then
+  export NETDATA_CLAIM_URL="${netdata_claim_url}"
+fi
+
+get_config netdata_claim_token
+if [[ -n "${netdata_claim_token}" ]]; then
+  export NETDATA_CLAIM_TOKEN="${netdata_claim_token}"
+fi
+
+get_config netdata_claim_rooms
+if [[ -n "${netdata_claim_rooms}" ]]; then
+  export NETDATA_CLAIM_ROOMS="${netdata_claim_rooms}"
+fi
+
+get_config netdata_extra_deb_packages
+if [[ -n "${netdata_extra_deb_packages}" ]]; then
+  export NETDATA_EXTRA_DEB_PACKAGES="${netdata_extra_deb_packages}"
+fi
 
 exec /usr/sbin/run.sh
