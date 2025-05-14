@@ -102,6 +102,34 @@ if ! mountpoint --quiet /host/etc/os-release; then
   exit 143
 fi
 
+# Fix docker group, mostly copied from https://github.com/felipecrs/fixdockergid
+# TODO: these things should be fixed in Netdata itself
+docker_sock='/var/run/docker.sock'
+if [[ -S "${docker_sock}" ]]; then
+  docker_gid="$(stat -c "%g" "${docker_sock}")"
+
+  if getent group "${docker_gid}" >/dev/null; then
+    # A group with the docker GID already exists
+
+    # Check if it is named docker
+    docker_gid_group_name="$(getent group "${docker_gid}" | cut -d: -f1)"
+    if [ "${docker_gid_group_name}" != "docker" ]; then
+      # In this case we create a group named docker, and make it an alias of such group.
+      groupadd -r docker
+      groupmod -o -g "${docker_gid}" docker
+    fi
+    unset docker_gid_group_name
+  else
+    # No group with docker GID exists, so we create it.
+    groupadd -r -g "${docker_gid}" docker
+  fi
+  unset docker_gid
+
+  # Otherwise docker plugin tries to connect to tcp://localhost:2375/var/run/docker.sock
+  sed -i "s|DOCKER_HOST=\"${docker_sock}\"|DOCKER_HOST=\"unix://${docker_sock}\"|" /usr/sbin/run.sh
+fi
+unset docker_sock
+
 get_config netdata_claim_url
 get_config netdata_claim_token
 get_config netdata_claim_rooms
