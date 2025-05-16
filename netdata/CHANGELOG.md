@@ -2,6 +2,12 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### v2.5.1-addon.3
+
+- Add check for when _Protection mode_ was not disabled
+- Avoid cleaning up Netdata images on initialization twice (before and after setting up the `/host` mounts)
+- Improve logs with fewer debug messages and more descriptive messages
+
 ### v2.5.1-addon.2
 
 - Remove dependency on Docker CLI

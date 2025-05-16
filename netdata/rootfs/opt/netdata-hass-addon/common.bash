@@ -1,4 +1,4 @@
-set -euxo pipefail
+set -euo pipefail
 shopt -s inherit_errexit
 
 function echo_error() {

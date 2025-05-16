@@ -45,23 +45,20 @@ function set_container_root_on_host() {
   fi
 }
 
-if [[ ! -d /config/netdata && -d /homeassistant/netdata ]]; then
-  echo "Migrating Netdata configuration files out of Home Assistant config directory..." >&2
-  mv -fv /homeassistant/netdata /config/
+echo "Setting up Netdata add-on..." >&2
+
+if [[ ! -S "${docker_sock}" ]]; then
+  error "This add-on needs 'Protection mode' to be disabled in the add-on page"
 fi
 
-# https://github.com/home-assistant/supervisor/issues/3223
-echo "Deleting old netdata images if any..." >&2
-curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" http://localhost/images/json |
-  jq --exit-status --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
-  xargs -r -I {} -t -- curl --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
-
 # We cannot specify arbitrary volume mounts for add-ons, so we have to use this trick.
-cat /host/etc/os-release || true
-
 if ! mountpoint --quiet /host/etc/os-release; then
+  echo "Setting up /host mounts..." >&2
+
   set_container_id
   set_container_root_on_host
+
+  set -x
 
   # Mount /proc from host to /host/proc as readonly with nsenter
   mkdir -p /host/proc
@@ -99,14 +96,29 @@ if ! mountpoint --quiet /host/etc/os-release; then
   nsenter --target 1 --mount -- \
     mount --bind --read-only /etc/os-release "${container_root_on_host}/host/etc/os-release"
 
+  set +x
+
   # Restart this container
+  echo "Restarting this container so that the new mounts take effect..." >&2
   curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" -X POST "http://localhost/containers/${container_id}/restart"
   exit 143
 fi
 
+if [[ ! -d /config/netdata && -d /homeassistant/netdata ]]; then
+  echo "Migrating Netdata configuration files out of Home Assistant config directory..." >&2
+  mv -fv /homeassistant/netdata /config/
+fi
+
+# https://github.com/home-assistant/supervisor/issues/3223
+echo "Cleaning up old Netdata images if any..." >&2
+curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" http://localhost/images/json |
+  jq --exit-status --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
+  xargs -r -I {} -t -- curl --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
+
 # Fix for when a group with the docker GID already exists
 # Originally taken from https://github.com/felipecrs/fixdockergid/blob/448da6054f76884425b204be8f3d6bcd9ff68acb/_fixdockergid.sh
 # TODO: submit fix upstream
+echo "Fixing docker GID..." >&2
 docker_gid="$(stat -c "%g" "${docker_sock}")"
 if getent group "${docker_gid}" >/dev/null; then
   # Check if it is named docker
@@ -120,6 +132,8 @@ if getent group "${docker_gid}" >/dev/null; then
 fi
 unset docker_gid docker_sock
 
+echo "Setting up Netdata directories..." >&2
+set -x
 mkdir -p /config/netdata /etc/netdata
 mount --bind /config/netdata /etc/netdata
 
@@ -128,7 +142,9 @@ mount --bind /data/netdata-cache /var/cache/netdata
 
 mkdir -p /data/netdata-lib /var/lib/netdata
 mount --bind /data/netdata-lib /var/lib/netdata
+set +x
 
+echo "Handling Netdata add-on configuration..." >&2
 get_config hostname
 hostname "${hostname:?}"
 
@@ -152,4 +168,5 @@ if [[ -n "${netdata_extra_deb_packages}" ]]; then
   export NETDATA_EXTRA_DEB_PACKAGES="${netdata_extra_deb_packages}"
 fi
 
+echo "Starting Netdata..." >&2
 exec /usr/sbin/run.sh

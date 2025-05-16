@@ -4,9 +4,8 @@ FROM ghcr.io/netdata/netdata:v2.5.1
 # hadolint ignore=DL3002
 USER root
 
-# prepare_image.sh could have been mounted with --mount, but HAOS apparently
-# doesn't use buildkit
-COPY rootfs/opt/netdata-hass-addon/prepare_image.sh /opt/netdata-hass-addon/
+# this could have been done with RUN --mount, but HAOS doesn't use buildkit
+COPY rootfs/opt/netdata-hass-addon/prepare_image.sh rootfs/opt/netdata-hass-addon/common.bash /opt/netdata-hass-addon/
 RUN ["/opt/netdata-hass-addon/prepare_image.sh"]
 
 COPY rootfs /
