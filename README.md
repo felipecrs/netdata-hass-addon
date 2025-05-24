@@ -1,3 +1,7 @@
+<p align="center">
+⭐<b>Please star this add-on in GitHub if it helps you!</b>⭐
+</p>
+
 # Home Assistant Add-on: Netdata
 
 _Monitor your servers, containers, and applications, in high-resolution and in
