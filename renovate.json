@@ -15,7 +15,7 @@
       "customType": "regex",
       "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
       "matchStrings": [
-        "FROM netdata/netdata:v(?<currentValue>.+)\\n",
+        "FROM ghcr.io/netdata/netdata:v(?<currentValue>.+)\\n",
         "version: (?<currentValue>.+)\\n"
       ],
       "depNameTemplate": "netdata/netdata",
