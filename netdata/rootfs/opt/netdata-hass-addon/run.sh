@@ -51,17 +51,6 @@ if [[ ! -S "${docker_sock}" ]]; then
   error "This add-on needs 'Protection mode' to be disabled in the add-on page"
 fi
 
-if [[ "${NETDATA_ADDON_TEST:-}" != "true" ]]; then
-  watchdog_enabled="$(
-    curl --fail-with-body --silent --show-error --header "Authorization: Bearer ${SUPERVISOR_TOKEN}" http://supervisor/addons/self/info |
-      jq --raw-output '.data.watchdog'
-  )"
-  if [[ "${watchdog_enabled}" != "true" ]]; then
-    error "This add-on needs 'Watchdog' to be enabled in the add-on page"
-  fi
-  unset watchdog_enabled
-fi
-
 # We cannot specify arbitrary volume mounts for add-ons, so we have to use this trick.
 if ! mountpoint --quiet /host/etc/os-release; then
   echo "Setting up /host mounts..." >&2

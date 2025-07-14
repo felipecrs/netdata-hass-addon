@@ -13,5 +13,3 @@ services:
     #   - SYS_ADMIN
     #   - SYS_RAWIO
     privileged: true
-    environment:
-      - NETDATA_ADDON_TEST=true

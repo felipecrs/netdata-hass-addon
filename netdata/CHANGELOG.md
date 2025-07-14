@@ -2,6 +2,10 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### v2.5.4-addon.2
+
+- Revert the _Fail on initialization if Watchdog is not enabled_ change, which was not necessary after all
+
 ### v2.5.4-addon.1
 
 - Fix the cleanup old Netdata images operation causing the add-on to fail on initialization if there was nothing to clean up
