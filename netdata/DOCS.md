@@ -22,7 +22,8 @@ Follow these steps to get the add-on installed on your system:
 
 ## Using
 
-1. Disable _Protection Mode_.
+1. Enable _Watchdog_ (mandatory).
+1. Disable _Protection Mode_ (mandatory).
 1. Start the add-on.
 
 ## Configuring Netdata

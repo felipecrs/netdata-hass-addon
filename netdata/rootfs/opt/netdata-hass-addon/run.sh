@@ -51,6 +51,17 @@ if [[ ! -S "${docker_sock}" ]]; then
   error "This add-on needs 'Protection mode' to be disabled in the add-on page"
 fi
 
+if [[ "${NETDATA_ADDON_TEST:-}" != "true" ]]; then
+  watchdog_enabled="$(
+    curl --fail-with-body --silent --show-error --header "Authorization: Bearer ${SUPERVISOR_TOKEN}" http://supervisor/addons/self/info |
+      jq --raw-output '.data.watchdog'
+  )"
+  if [[ "${watchdog_enabled}" != "true" ]]; then
+    error "This add-on needs 'Watchdog' to be enabled in the add-on page"
+  fi
+  unset watchdog_enabled
+fi
+
 # We cannot specify arbitrary volume mounts for add-ons, so we have to use this trick.
 if ! mountpoint --quiet /host/etc/os-release; then
   echo "Setting up /host mounts..." >&2
@@ -111,9 +122,9 @@ fi
 
 # https://github.com/home-assistant/supervisor/issues/3223
 echo "Cleaning up old Netdata images if any..." >&2
-curl --max-time 10 --silent --show-error --unix-socket "${docker_sock}" http://localhost/images/json |
-  jq --exit-status --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
-  xargs -r -I {} -t -- curl --max-time 10 --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
+curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" http://localhost/images/json |
+  jq --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
+  xargs -r -I {} -t -- curl --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
 
 # Fix for when a group with the docker GID already exists
 # Originally taken from https://github.com/felipecrs/fixdockergid/blob/448da6054f76884425b204be8f3d6bcd9ff68acb/_fixdockergid.sh
