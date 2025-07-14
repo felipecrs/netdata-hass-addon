@@ -2,6 +2,12 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### v2.5.4-addon.1
+
+- Fix the cleanup old Netdata images operation causing the add-on to fail on initialization if there was nothing to clean up
+- Fail on initialization if _Watchdog_ is not enabled
+- Revert the _Add a timeout for the cleanup old Netdata images operation_ change, which was not necessary after all
+
 ### v2.5.4-addon.0
 
 - Add a timeout for the cleanup old Netdata images operation to avoid blocking the add-on startup indefinitely
