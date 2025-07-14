@@ -2,6 +2,10 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### v2.5.4-addon.0
+
+- Add a timeout for the cleanup old Netdata images operation to avoid blocking the add-on startup indefinitely
+
 ### v2.5.2-addon.0
 
 - Fix Netdata version still in 2.5.1
