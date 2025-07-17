@@ -115,23 +115,6 @@ curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" http:
   jq --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
   xargs -r -I {} -t -- curl --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
 
-# Fix for when a group with the docker GID already exists
-# Originally taken from https://github.com/felipecrs/fixdockergid/blob/448da6054f76884425b204be8f3d6bcd9ff68acb/_fixdockergid.sh
-# TODO: submit fix upstream
-echo "Fixing docker GID..." >&2
-docker_gid="$(stat -c "%g" "${docker_sock}")"
-if getent group "${docker_gid}" >/dev/null; then
-  # Check if it is named docker
-  docker_gid_group_name="$(getent group "${docker_gid}" | cut -d: -f1)"
-  if [[ "${docker_gid_group_name}" != "docker" ]]; then
-    # If it's not named docker, create a group named docker and make it an alias of such group.
-    groupadd -r docker
-    groupmod -o -g "${docker_gid}" docker
-  fi
-  unset docker_gid_group_name
-fi
-unset docker_gid docker_sock
-
 echo "Setting up Netdata directories..." >&2
 set -x
 mkdir -p /config/netdata /etc/netdata

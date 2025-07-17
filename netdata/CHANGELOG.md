@@ -2,6 +2,10 @@
 
 [Click here to view the release notes of Netdata itself](https://github.com/netdata/netdata/releases).
 
+### v2.6.0-addon.0
+
+- Remove workaround for Netdata not resolving container names, as it was fixed in Netdata v2.6.0
+
 ### v2.5.4-addon.2
 
 - Revert the _Fail on initialization if Watchdog is not enabled_ change, which was not necessary after all
