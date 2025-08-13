@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Netdata
-version: v2.6.1
+version: v2.6.2
 slug: netdata
 description:
   Monitor your servers, containers, and applications, in high-resolution and in
