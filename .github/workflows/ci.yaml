@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: frenck/action-addon-linter@v2.20
+      - uses: frenck/action-addon-linter@v2.21
         with:
           path: ./netdata
       - run: tests/test.sh
