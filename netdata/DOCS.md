@@ -1,10 +1,8 @@
 # Home Assistant Add-on: Netdata
 
-_Monitor your servers, containers, and applications, in high-resolution and in
-real-time._
+_Monitor your servers, containers, and applications, in high-resolution and in real-time._
 
-Learn more about Netdata at their
-[official website](https://www.netdata.cloud/).
+Learn more about Netdata at their [official website](https://www.netdata.cloud/).
 
 ![Netdata Home Assistant add-on](https://github.com/felipecrs/netdata-hass-addon/assets/29582865/535dcb73-c556-4369-aadd-a2d32425b83c)
 
@@ -98,7 +96,7 @@ interface through the Home Assistant interface.
 However, the add-on also exposes the Netdata web interface on port `19999`,
 which you can access from your browser:
 
-```
+```text
 http://<HA IP address>:19999
 ```
 
@@ -114,5 +112,4 @@ sensor:
 
 You do not need to configure `host`, `port`, or `name`. The defaults will work.
 
-Read more on how to configure the Netdata integration
-[here](https://www.home-assistant.io/integrations/netdata/).
+[Read more on how to configure the Netdata integration](https://www.home-assistant.io/integrations/netdata/).

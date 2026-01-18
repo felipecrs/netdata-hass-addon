@@ -4,6 +4,10 @@
 
 [Read the Netdata release notes](https://github.com/netdata/netdata/releases)
 
+## 2.8.5-addon.0
+
+- Remove armhf, armv7, and i386 architectures, as they are no longer supported by Home Assistant
+
 ## 2.6.0-addon.0
 
 - Remove workaround for Netdata not resolving container names, as it was fixed in Netdata v2.6.0
