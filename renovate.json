@@ -26,6 +26,10 @@
       "description": "Automerge non-major updates",
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
+    },
+    {
+      "matchPackageNames": ["ghcr.io/netdata/netdata"],
+      "minimumGroupSize": 2
     }
   ]
 }
