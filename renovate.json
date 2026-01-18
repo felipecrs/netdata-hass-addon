@@ -2,13 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "dependencyDashboard": true,
-  "packageRules": [
-    {
-      "description": "Automerge non-major updates",
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true
-    }
-  ],
   "enabledManagers": ["github-actions", "regex"],
   "customManagers": [
     {
@@ -18,8 +11,16 @@
         "FROM ghcr.io/netdata/netdata:v(?<currentValue>.+)\\n",
         "version: (?<currentValue>.+)\\n"
       ],
-      "depNameTemplate": "netdata/netdata",
-      "datasourceTemplate": "github-releases"
+      "datasourceTemplate": "github-releases",
+      "packageNameTemplate": "netdata/netdata",
+      "depNameTemplate": "netdata"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
     }
   ]
 }
