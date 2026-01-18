@@ -6,14 +6,18 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
+      "fileMatch": ["^netdata/Dockerfile$", "^netdata/config.yaml$", "^netdata/CHANGELOG.md$"],
       "matchStrings": [
         "FROM ghcr.io/netdata/netdata:v(?<currentValue>.+)\\n",
-        "version: (?<currentValue>.+)\\n"
+        "version: (?<currentValue>.+)\\n",
+        "## (?<currentValue>.+)\\n",
+        "- Update Netdata to (?<currentValue>.+). [Read the release notes]\\(https://github.com/netdata/netdata/releases/tag/v(?<currentValue>.+)\\).\\n"
       ],
       "datasourceTemplate": "github-releases",
       "packageNameTemplate": "netdata/netdata",
-      "depNameTemplate": "netdata"
+      "depNameTemplate": "Netdata",
+      "extractVersionTemplate": "^v(?<version>.+)$",
+      "versioningTemplate": "semver"
     }
   ],
   "packageRules": [
