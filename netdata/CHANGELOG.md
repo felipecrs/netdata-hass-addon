@@ -4,7 +4,8 @@
 
 ## 2.8.5
 
-- Update Netdata to 2.8.5. [Read the release notes](https://github.com/netdata/netdata/releases/tag/v2.8.5).
+- Update Netdata to 2.8.5
+  - [Read the release notes](https://github.com/netdata/netdata/releases/tag/v2.8.5)
 
 ## 2.6.0-addon.0
 
@@ -124,4 +125,4 @@
 
 ## 1.42.4
 
-- Initial release based on Netdata v1.42.4
+- Initial release based on Netdata 1.42.4

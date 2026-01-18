@@ -11,7 +11,8 @@
         "FROM ghcr.io/netdata/netdata:v(?<currentValue>.+)\\n",
         "version: (?<currentValue>.+)\\n",
         "## (?<currentValue>.+)\\n",
-        "- Update Netdata to (?<currentValue>.+). [Read the release notes]\\(https://github.com/netdata/netdata/releases/tag/v(?<currentValue>.+)\\).\\n"
+        "- Update Netdata to (?<currentValue>.+)\\n",
+        "  - [Read the release notes]\\(https://github.com/netdata/netdata/releases/tag/v(?<currentValue>.+)\\)\\n"
       ],
       "datasourceTemplate": "github-releases",
       "packageNameTemplate": "netdata/netdata",
