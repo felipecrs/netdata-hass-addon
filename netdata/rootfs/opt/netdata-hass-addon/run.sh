@@ -109,12 +109,6 @@ if [[ ! -d /config/netdata && -d /homeassistant/netdata ]]; then
   mv -fv /homeassistant/netdata /config/
 fi
 
-# https://github.com/home-assistant/supervisor/issues/3223
-echo "Cleaning up old Netdata images if any..." >&2
-curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" http://localhost/images/json |
-  jq --raw-output '.[] | select(.RepoTags != null) | select(.RepoTags[] | test("netdata/netdata|ghcr.io/netdata/netdata")) | .Id' |
-  xargs -r -I {} -t -- curl --silent --show-error --unix-socket "${docker_sock}" -X DELETE "http://localhost/images/{}"
-
 echo "Setting up Netdata directories..." >&2
 set -x
 mkdir -p /config/netdata /etc/netdata

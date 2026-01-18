@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Netdata
-version: 2.8.5-addon.0
+version: 2.8.5-addon.1
 slug: netdata
 description: Monitor your servers, containers, and applications, in high-resolution and in real-time
 url: "https://github.com/felipecrs/netdata-hass-addon/tree/master/netdata"
