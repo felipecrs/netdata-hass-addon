@@ -6,7 +6,10 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["^netdata/Dockerfile$", "^netdata/config.yaml$"],
+      "managerFilePatterns": [
+        "/^netdata/Dockerfile$/",
+        "/^netdata/config.yaml$/"
+      ],
       "matchStrings": [
         "FROM ghcr.io/netdata/netdata:v(?<currentValue>.+)\\n",
         "version: (?<currentValue>.+)\\n"
