@@ -6,7 +6,7 @@ source /opt/netdata-hass-addon/common.bash
 docker_sock='/var/run/docker.sock'
 
 # Gets the current/parent container id on the host.
-# Originally taken from https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond
+# Originally taken from https://github.com/felipecrs/docker-on-docker-shim/blob/68218cd76b7068ca86fc91a3169cebcc5450ae7d/dond
 function set_container_id() {
   local result
 
@@ -28,14 +28,29 @@ function set_container_id() {
 }
 
 # Gets the root directory of the current/parent container on the host filesystem.
-# Originally taken from https://github.com/felipecrs/docker-on-docker-shim/blob/90185d4391fb8863e1152098f07a95febbe79dba/dond
+# Originally taken from https://github.com/felipecrs/docker-on-docker-shim/blob/68218cd76b7068ca86fc91a3169cebcc5450ae7d/dond
 function set_container_root_on_host() {
   local result
 
-  result="$(
-    curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" "http://localhost/containers/${container_id}/json" |
-      jq --exit-status --raw-output '.GraphDriver.Data.MergedDir'
+  local docker_info
+  docker_info="$(
+    curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" "http://localhost/info" |
+      jq --exit-status --raw-output '.Driver + "|" + .DockerRootDir'
   )"
+
+  local storage_driver="${docker_info%%"|"*}"
+  local docker_data_dir="${docker_info#*"|"}"
+
+  if [[ "${storage_driver}" == "overlay2" ]]; then
+    result="$(
+      curl --fail-with-body --silent --show-error --unix-socket "${docker_sock}" "http://localhost/containers/${container_id}/json" |
+        jq --exit-status --raw-output '.GraphDriver.Data.MergedDir'
+    )"
+  elif [[ "${storage_driver}" == "overlayfs" ]]; then
+    result="${docker_data_dir}/rootfs/overlayfs/${container_id}"
+  else
+    error "Unsupported storage driver: ${storage_driver}"
+  fi
 
   # Sanity check
   if [[ "${result}" =~ ^(/[^/]+)+$ ]]; then

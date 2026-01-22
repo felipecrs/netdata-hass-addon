@@ -4,6 +4,11 @@
 
 [Read the Netdata release notes](https://github.com/netdata/netdata/releases)
 
+## 2.8.5-addon.2
+
+- Fix when Docker Daemon is running with the containerd-snapshotter
+  - It's the case for new installations of [Home Assistant OS 17](https://github.com/home-assistant/operating-system/releases/tag/17.0) and later, or those who migrated manually
+
 ## 2.8.5-addon.1
 
 - Remove the workaround for deleting old Netdata images on startup
