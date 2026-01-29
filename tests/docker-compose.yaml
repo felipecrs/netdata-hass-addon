@@ -2,8 +2,8 @@ services:
   netdata:
     build: ../netdata
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
       - ./options.json:/data/options.json
+    use_api_socket: true
     pid: host
     network_mode: host
     # For some reason, even though these capabilities are enough in my machine,
