@@ -7,8 +7,7 @@ readonly script_dir
 
 cd "${script_dir}"
 
-# HAOS apparently doesn't use buildkit
-DOCKER_BUILDKIT=0 docker compose build
+docker compose build
 
 trap 'docker compose down' EXIT
 
