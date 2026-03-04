@@ -1,4 +1,4 @@
-FROM ghcr.io/netdata/netdata:v2.8.5
+FROM ghcr.io/netdata/netdata:v2.9.0
 
 # add-ons normally run as root
 # hadolint ignore=DL3002
